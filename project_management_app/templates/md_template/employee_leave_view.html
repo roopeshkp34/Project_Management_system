@@ -1,0 +1,69 @@
+{% extends 'md_template/base_template.html' %}
+{% block page_title %}
+Employee & Department Apply for Leave
+{% endblock page_title %}
+{% block main_content %}
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="col-md-12">
+            <!-- general form elements -->
+            <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">Employee & Department Apply for Leave</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+             <div class="table">
+                 <table class="table">
+                     <tr>
+                         <th>ID</th>
+                         <th>Employee ID</th>
+                         <th>Employee Name</th>
+                         <th>Category</th>
+                         <th>Leave Date</th>
+                         <th>Leave Message</th>
+                         <th>Apply On</th>
+                         <th>Updated</th>
+                         <th>Action</th>
+                     </tr>
+                     {% for leave in leaves %}
+                     <tr>
+                         <td>{{ leave.id }}</td>
+                         <td>{{ leave.employee_id.admin.id }}</td>
+                         <td>{{ leave.employee_id.admin.first_name }}  {{ leave.employee_id.admin.last_name }}</td>
+                         {% if leave.status == 0 %}
+                         <td>Hod</td>
+                         {% else %}
+                         <td>Employee</td>
+                         {% endif %}
+                         <td>{{ leave.leave_date }}</td>
+                         <td>{{ leave.leave_message }}</td>
+                         <td>{{ leave.created_at }}</td>
+                         <td>{{ leave.updated_at }}</td>
+                         <td>
+                             {% if leave.leave_status == 0 %}
+                             <a href="{% url 'employee_approve_leave' leave_id=leave.id %}" class="btn btn-success ">Approve</button>
+                             <a href="{% url 'employee_disapproved_leave' leave_id=leave.id %}" class="btn btn-danger ">Disapprove</button>
+                             {% elif leave.leave_status == 1 %}
+                             <a  class="btn btn-success " >Approved </button>
+                             <a href="{% url 'employee_disapproved_leave' leave_id=leave.id %}" >Disapprove</button>
+                             {% else %}
+                             <a href="{% url 'employee_approve_leave' leave_id=leave.id %}" >Approve</button>
+                             <a  class="btn btn-danger " >Disapproved</button>
+                             <!-- {{ feedback.feedback_reply }} -->
+                             {% endif %}
+                         </td>
+                     </tr>
+
+                     {% endfor %}
+                 </table>
+             </div>
+
+            </div>
+            <!-- /.card -->
+           
+           
+    </div>
+  </section>
+{% endblock main_content %}
